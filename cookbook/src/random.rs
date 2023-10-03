@@ -1,6 +1,8 @@
 use rand::distributions::Uniform;
 use rand::distributions::Distribution;
-use rand::Rng;
+use rand::{Rng};
+use rand_distr::{Normal, NormalError};
+
 
 pub fn rand_num() {
     println!("------------------------------------rand num");
@@ -8,6 +10,9 @@ pub fn rand_num() {
 
     println!("------------------------rand2");
     rand2();
+
+    println!("------------------------rand3");
+    rand3().expect("TODO: panic message");
 }
 
 // 生成随机数
@@ -40,4 +45,14 @@ fn rand2() {
             break;
         }
     }
+}
+
+// 生成给定分布随机数
+fn rand3() -> Result<(), NormalError> {
+    let mut rng = rand::thread_rng();
+    let normal = Normal::new(2.0, 3.0)?;
+    let v = normal.sample(&mut rng);
+
+    println!("{} is from a N(2, 9) distribution", v);
+    Ok(())
 }
