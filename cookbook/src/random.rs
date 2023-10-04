@@ -1,6 +1,6 @@
-use rand::distributions::Distribution;
+use rand::distributions::{Alphanumeric, Distribution};
 use rand::distributions::{Standard, Uniform};
-use rand::Rng;
+use rand::{Rng, thread_rng};
 use rand_distr::{Normal, NormalError};
 
 pub fn rand_num() {
@@ -15,6 +15,9 @@ pub fn rand_num() {
 
     println!("------------------------rand4");
     rand4();
+
+    println!("------------------------rand5");
+    rand5();
 }
 
 // 生成随机数
@@ -79,10 +82,19 @@ impl Distribution<Point> for Standard {
 
 // 生成自定义类型随机值
 fn rand4() {
-    let mut rng = rand::thread_rng();
+    let mut rng = thread_rng();
     let rand_tuple = rng.gen::<(i32, f64, bool)>();
     let rand_point: Point = rng.gen();
 
     println!("Random point: {:?}", rand_tuple);
     println!("Random point: {:?}", rand_point);
+}
+
+// 生成随机密码
+fn rand5() {
+    let rng = thread_rng();
+    let iter = rng.sample_iter(&Alphanumeric);
+    let x: String = iter.take(30).map(char::from).collect();
+
+    println!("{}", x);
 }
