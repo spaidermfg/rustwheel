@@ -1,8 +1,7 @@
-use rand::distributions::Uniform;
 use rand::distributions::Distribution;
-use rand::{Rng};
+use rand::distributions::{Standard, Uniform};
+use rand::Rng;
 use rand_distr::{Normal, NormalError};
-
 
 pub fn rand_num() {
     println!("------------------------------------rand num");
@@ -12,7 +11,10 @@ pub fn rand_num() {
     rand2();
 
     println!("------------------------rand3");
-    rand3().expect("TODO: panic message");
+    rand3().expect("rand error");
+
+    println!("------------------------rand4");
+    rand4();
 }
 
 // 生成随机数
@@ -55,4 +57,32 @@ fn rand3() -> Result<(), NormalError> {
 
     println!("{} is from a N(2, 9) distribution", v);
     Ok(())
+}
+
+#[derive(Debug)]
+struct Point {
+    x: i32,
+    y: i32,
+    z: bool,
+}
+
+impl Distribution<Point> for Standard {
+    fn sample<R: Rng + ?Sized>(&self, rng: &mut R) -> Point {
+        let (rx, ry, rz) = rng.gen();
+        Point {
+            x: rx,
+            y: ry,
+            z: rz,
+        }
+    }
+}
+
+// 生成自定义类型随机值
+fn rand4() {
+    let mut rng = rand::thread_rng();
+    let rand_tuple = rng.gen::<(i32, f64, bool)>();
+    let rand_point: Point = rng.gen();
+
+    println!("Random point: {:?}", rand_tuple);
+    println!("Random point: {:?}", rand_point);
 }
