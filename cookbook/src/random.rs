@@ -18,6 +18,9 @@ pub fn rand_num() {
 
     println!("------------------------rand5");
     rand5();
+
+    println!("------------------------rand6");
+    rand6();
 }
 
 // 生成随机数
@@ -97,4 +100,21 @@ fn rand5() {
     let x: String = iter.take(30).map(char::from).collect();
 
     println!("{}", x);
+}
+
+const PASSWORD_LEN: usize = 30;
+const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
+                            abcdefghijklmnopqrstuvwxyz\
+                            0123456789)(*&^%$#@!~";
+
+// 使用自定义字符创建随机密码
+fn rand6() {
+    let mut rng = thread_rng();
+
+    let password: String = (0..PASSWORD_LEN).map(|_| {
+        let idx = rng.gen_range(0..CHARSET.len());
+        CHARSET[idx] as char
+    }).collect();
+
+    println!("password: {:?}", password);
 }
