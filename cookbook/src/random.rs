@@ -1,6 +1,6 @@
 use rand::distributions::{Alphanumeric, Distribution};
 use rand::distributions::{Standard, Uniform};
-use rand::{Rng, thread_rng};
+use rand::{thread_rng, Rng};
 use rand_distr::{Normal, NormalError};
 
 pub fn rand_num() {
@@ -111,10 +111,12 @@ const CHARSET: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
 fn rand6() {
     let mut rng = thread_rng();
 
-    let password: String = (0..PASSWORD_LEN).map(|_| {
-        let idx = rng.gen_range(0..CHARSET.len());
-        CHARSET[idx] as char
-    }).collect();
+    let password: String = (0..PASSWORD_LEN)
+        .map(|_| {
+            let idx = rng.gen_range(0..CHARSET.len());
+            CHARSET[idx] as char
+        })
+        .collect();
 
     println!("password: {:?}", password);
 }
