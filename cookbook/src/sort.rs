@@ -4,6 +4,8 @@ pub fn sort_thing() {
     integer_sort();
 
     float_sort();
+
+    struct_sort();
 }
 
 // 整数排序
@@ -45,5 +47,4 @@ fn struct_sort() {
     let mut sort_p = vec![p1, p2, p3];
     sort_p.sort();
     println!("{:?}", sort_p);
-
 }
