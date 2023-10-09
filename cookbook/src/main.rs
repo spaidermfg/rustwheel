@@ -1,6 +1,7 @@
 use crate::param::param_cmd;
 use crate::random::rand_num;
 use crate::sort::sort_thing;
+use crate::tar::tar_handler;
 
 mod random;
 mod sort;
