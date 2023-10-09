@@ -5,6 +5,7 @@ use crate::sort::sort_thing;
 mod random;
 mod sort;
 mod param;
+mod tar;
 
 fn main() {
     println!("Hello, Cookbook!");
@@ -14,4 +15,6 @@ fn main() {
     sort_thing();
 
     param_cmd();
+
+    tar_handler();
 }
