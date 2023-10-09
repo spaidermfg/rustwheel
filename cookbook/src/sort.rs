@@ -24,7 +24,7 @@ fn float_sort() {
 
 // 结构体排序
 
-#[derive(Debug)]
+#[derive(Debug, Ord, Eq, PartialOrd, PartialEq)]
 struct Person {
     name: String,
     age: u32,
@@ -32,10 +32,7 @@ struct Person {
 
 impl Person {
     pub fn new(name: String, age: u32) -> Self {
-        Person {
-            name,
-            age,
-        }
+        Person {name, age}
     }
 }
 
@@ -44,7 +41,12 @@ fn struct_sort() {
     let p2 = Person::new("mark".to_string(), 12);
     let p3 = Person::new("tom".to_string(), 78);
 
+    // 自然排序
     let mut sort_p = vec![p1, p2, p3];
     sort_p.sort();
+    println!("{:?}", sort_p);
+
+    //按照age进行排序
+    sort_p.sort_by(|a, b| b.age.cmp(&a.age));
     println!("{:?}", sort_p);
 }
