@@ -11,4 +11,4 @@ clap = "4.4.6"
 flate2 = "1.0.27"
 rand = "0.8.5"
 rand_distr = "0.4.3"
-tar = "0.4.40"
+tar = { version = "0.4.40", features = [] }

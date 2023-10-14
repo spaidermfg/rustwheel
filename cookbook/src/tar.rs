@@ -1,7 +1,9 @@
 use std::fs::File;
 use std::io::Error;
+use flate2::Compression;
 use flate2::read::GzDecoder;
-use tar::Archive;
+use flate2::write::GzEncoder;
+use tar::{Builder, Archive};
 
 pub fn tar_handler() {
     let a = unpack_tar_gz();
@@ -9,6 +11,12 @@ pub fn tar_handler() {
     match a {
         Ok(res) => println!("unpack ok: {:?}", res),
         Err(error) => println!("unpack err: {}", error)
+    }
+
+    let pack = pack_tar_gz();
+    match pack {
+        Ok(()) => println!("pack success"),
+        Err(error) => println!("pack err: {}", error)
     }
 }
 
@@ -22,4 +30,13 @@ fn unpack_tar_gz() -> Result<&'static str, Error> {
     archive.unpack(".")?;
 
     Ok("解压成功")
+}
+
+fn pack_tar_gz() -> Result<(), Error> {
+    let tar_gz = File::create("archive.tar.gz")?;
+    let enc = GzEncoder::new(tar_gz, Compression::default());
+    let mut ar = Builder::new(enc);
+    ar.append_dir_all(".", "/var/log")?;
+
+    Ok(())
 }
