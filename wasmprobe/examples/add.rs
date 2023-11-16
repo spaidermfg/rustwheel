@@ -1,6 +1,6 @@
 use wasmer::{imports, Instance, Module, Store, Value};
 
-fn main() -> anyhow::Result<()> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let module_wat = r#"
     (module
       (type $t0 (func (param i32) (result i32)))
@@ -21,4 +21,9 @@ fn main() -> anyhow::Result<()> {
     println!("{:?}", res[0]);
 
     Ok(())
+}
+
+#[test]
+fn test_add() -> Result<(), Box<dyn std::error::Error>> {
+    main()
 }
