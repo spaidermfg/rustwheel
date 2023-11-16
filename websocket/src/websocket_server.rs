@@ -1,7 +1,5 @@
 use tokio::net::TcpListener;
 use tokio_tungstenite::tungstenite::accept;
-use websocket::server::sync::Request;
-
 #[tokio::main]
 async fn main() {
     let listener = TcpListener::bind("127.0.0.1:6767").await?;
