@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 wasmer = "4.2.3"
+wasmer-wasix = "0.16.0"

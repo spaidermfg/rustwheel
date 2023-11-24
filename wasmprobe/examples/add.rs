@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let add_one = instance.exports.get_function("add_one")?;
     let res = add_one.call(&mut store, &[Value::I32(42)])?;
 
-    println!("{:?}", res[0]);
+    println!("result: {:?}", res[0]);
 
     Ok(())
 }
