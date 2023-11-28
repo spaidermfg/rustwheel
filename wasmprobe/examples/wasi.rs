@@ -15,7 +15,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut store = Store::default();
 
     println!("Compiling module...");
-
     let module = Module::new(&store, wasm_bytes)?;
     let (stdout_tx, mut stdout_rx) = Pipe::channel();
 

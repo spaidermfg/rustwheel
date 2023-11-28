@@ -10,5 +10,5 @@ fn main() {
 
 #[tauri::command]
 fn greet(name: &str) -> String {
-    format!("Hello {}!", name)
+    format!("This is a beautiful space,  {}!", name)
 }
