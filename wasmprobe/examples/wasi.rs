@@ -4,8 +4,6 @@ use wasmer::{Module, Store};
 use wasmer_wasix::{Pipe, WasiEnv};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-
-
     if let Ok(current_dir) = env::current_dir() {
         println!("DIR: {:?}", current_dir);
     } else {
