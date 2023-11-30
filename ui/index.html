@@ -7,6 +7,21 @@
 </head>
 <body>
 <h1 id="header">Welcome from Tauri!</h1>
+<table border="1">
+  <tr>
+    <td>aa</td>
+    <td>bb</td>
+    <td>cc</td>
+    <td>dd</td>
+  </tr>
+</table>
+
+<label for="name">用户名：</label>
+<form name="input" action="http://localhost:8080" method="get">
+  <input type="text" id="name" name="name" required>
+  <input type="submit" value="Submit">
+</form>
+
 <script>
   // access the pre-bundled global API functions
   const { invoke } = window.__TAURI__.tauri
@@ -19,6 +34,8 @@
           .then((response) => {
             window.header.innerHTML = response
           })
+
+  console.log(name)
 </script>
 </body>
 </html>
