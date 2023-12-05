@@ -15,7 +15,7 @@ enum System {
 
 impl System {
     pub fn use_android(&self) -> System {
-        System::Android
+        System::Android{vendor: "android".to_string() , date: 6.7 }
     }
 
     pub fn use_linux(&self) -> System {
