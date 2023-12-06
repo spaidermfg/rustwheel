@@ -6,15 +6,13 @@ pub fn enum_mind() {
 #[derive(Debug)]
 enum System {
     Linux,
-    MacOS,
-    Windows,
     Android{ vendor: String, date: f64}, // 类结构体枚举变体
     IOS(String, f64),   //枚举变体
 }
 
 
 impl System {
-    pub fn use_android(&self) -> System {
+    pub fn use_android(&self) -> System::Android {
         System::Android{vendor: "android".to_string() , date: 6.7 }
     }
 
@@ -26,5 +24,12 @@ impl System {
 fn mind() {
     let a = System::Linux;
     let system = a.use_linux();
-    println!("{:?}", system)
+    println!("{:?}", system);
+
+
+    let android = System::use_android(&System::Linux);
+    println!("{:?}", android);
+
+    let ios = System::IOS("hello".to_string(), 6.7);
+    println!("{:?}", ios);
 }

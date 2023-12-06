@@ -39,12 +39,12 @@ fn rand1() {
 
 // 生成范围内随机数
 fn rand2() {
-    let mut rng = rand::thread_rng();
+    let mut rng = thread_rng();
 
     println!("Integer: {}", rng.gen_range(0..10));
     println!("Float: {}", rng.gen_range(0.0..10.0));
 
-    let mut rng1 = rand::thread_rng();
+    let mut rng1 = thread_rng();
     let die = Uniform::from(1..40);
     loop {
         let throw = die.sample(&mut rng1);
