@@ -1,18 +1,19 @@
 pub fn higher() {
-    eprintln!("world wide");
+    println!();
     handle_csv();
 }
 
 fn handle_csv() {
-    let penguin_data = "\
-    common name,length (cm)\
-    Little penguin,33\
-    Yellow-eyed penguin,65\
-    Fiordland penguin,60\
-    Invalid,data\
+    let penguin_data = "\n
+    common name,length (cm)\n
+    Little penguin,33\n
+    Yellow-eyed penguin,65\n
+    Fiordland penguin,60\n
+    Invalid,data\n
     ";
     let records = penguin_data.lines();
     for (i, record) in records.enumerate() {
+        //println!("{} {:?}", i,record);
         if i == 0 || record.trim().len() == 0 {
             continue;
         }

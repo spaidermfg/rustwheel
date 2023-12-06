@@ -36,7 +36,7 @@ fn pack_tar_gz() -> Result<(), Error> {
     let tar_gz = File::create("archive.tar.gz")?;
     let enc = GzEncoder::new(tar_gz, Compression::default());
     let mut ar = Builder::new(enc);
-    ar.append_dir_all(".", "/var/log")?;
+    ar.append_dir_all(".", "/var/logs")?;
 
     Ok(())
 }
