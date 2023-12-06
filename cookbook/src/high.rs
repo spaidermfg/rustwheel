@@ -1,10 +1,13 @@
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
+use num::Complex;
+use std::time::{Instant,Duration};
 
 pub fn higher() {
     println!();
     handle_csv();
     create();
+    real_imaginary();
 }
 
 fn handle_csv() {
@@ -67,5 +70,44 @@ fn create() {
     println!("base 16: {:X} {:X} {:X}",binary,octal,hex);
 
     // 避免测试浮点数的相等性
-    assert_eq!(0.1 + 0.2, 0.3);
+    assert_ne!(0.1 + 0.2, 0.3);
+}
+
+fn real_imaginary() {
+    let a = Complex{ re: 2.1, im: -1.2 };
+    let b = Complex::new(11.1, 22.33);
+    let result = a + b;
+    println!("{} + {}i", result.re, result.im);
+
+    for n in 0..100 {
+        if n % 2 == 0 {
+            continue;
+        }
+        println!("n={}", n);
+    }
+
+    let mut count = 0;
+    let time_limit = Duration::new(1,0);
+    let start = Instant::now();
+    while (Instant::now() - start) < time_limit {
+        count += 1;
+    }
+    println!("count={}", count);
+
+    let mut ins: Vec<i32> = vec![];
+    let loop_result = loop {
+        ins.push(56);
+        if ins.len() > 5000 {
+            break 123;
+        }
+    };
+    println!("loop result={}", loop_result);
+
+    let needle = 0o204; // 2 x 8^2 + 0 x 8^1 + 4 x 8^0
+    let haystack = [1,2,1,5,23,44,132,456,3221,23445];
+    for item in &haystack {
+      if *item == needle {
+          println!("needle={}", item);
+      }
+    }
 }
