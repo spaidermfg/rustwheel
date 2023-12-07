@@ -2,7 +2,6 @@ use std::rc::Rc;
 use std::sync::{Arc, Mutex};
 use num::Complex;
 use std::time::{Instant,Duration};
-use std::string::String;
 use std::ops::Add;
 
 pub fn higher() {
@@ -204,8 +203,44 @@ fn grep_lite() {
     then we are currently paused,
     and we would like to call request AnimationFrame to resume the game.";
 
+    let mut tags: Vec<usize> = vec![];
+    let mut ctx: Vec<Vec<(usize, String)>> = vec![];
+    let a = String::new();
 
+    for (i, line) in quote.lines().enumerate() {
+        if line.contains(search_term) {
+            tags.push(i);
 
+            let v = Vec::with_capacity(2 * ctx_lines + 1);
+            ctx.push(v);
+        }
+    }
+
+    if tags.is_empty() {
+        return;
+    }
+
+    for (i,line) in quote.lines().enumerate() {
+        for (j, tag) in tags.iter().enumerate() {
+            let lower_bound = tag.saturating_sub(ctx_lines);
+            let upper_bound = tag + ctx_lines;
+
+            if (i >= lower_bound) && (i <= upper_bound) {
+                let line_as_string = String::from(line);
+                let local_ctx = (i, line_as_string);
+                ctx[j].push(local_ctx);
+            }
+        }
+    }
+
+    for local_ctx in ctx.iter() {
+        for &(i, ref line) in local_ctx.iter() {
+            let line_num = i + 1;
+            println!("{}: {}", line_num, line);
+        }
+    }
+
+    println!();
     for (i,line) in quote.lines().enumerate() {
         if line.contains(search_term) {
             let line_num = i + 1;
