@@ -17,6 +17,8 @@ pub fn higher() {
     println!("{}", life);
 
     test_add_portal();
+    grep_lite();
+    create_array();
 }
 
 fn handle_csv() {
@@ -187,4 +189,48 @@ fn test_add_portal() {
     let durations = add_portal(Duration::new(5,0), Duration::new(2,0));
 
     println!("floats={}, ints={}, durations={:?}", floats, ints, durations);
+}
+
+fn grep_lite() {
+    let ctx_lines = 2;
+    let search_term = "animation";
+    let quote = "When the play/pause button is clicked,
+    check for whether we have the identifier for a queued animation frame.
+    If we do,
+    then the game is currently playing,
+    and we want to cancel the animation frame so that renderLoop isn't called again,
+    effectively pausing the game.
+    If we do not have an identifier for a queued animation frame,
+    then we are currently paused,
+    and we would like to call request AnimationFrame to resume the game.";
+
+
+
+    for (i,line) in quote.lines().enumerate() {
+        if line.contains(search_term) {
+            let line_num = i + 1;
+            println!("{} {}",line_num, line);
+        }
+    }
+}
+
+fn create_array() {
+    let one = [1,2,3];
+    let two: [u8;3] = [1,2,3];
+    let blank1 = [2;3];
+    let blank2:[u8;3] = [0; 3];
+
+    let arrays = [one, two, blank1, blank2];
+    for a in &arrays {
+        print!("{:?}:", a);
+        for n in a.iter() {
+            print!("\t{} + 10 = {}", n, n+10 );
+        }
+
+        let mut sum = 0;
+        for i in 0..a.len() {
+            sum += a[i];
+        }
+        println!("\t(∑{:?} = {})", a, sum);
+    }
 }

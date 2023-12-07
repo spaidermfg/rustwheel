@@ -12,7 +12,7 @@ enum System {
 
 
 impl System {
-    pub fn use_android(&self) -> System::Android {
+    pub fn use_android(&self) -> System {
         System::Android{vendor: "android".to_string() , date: 6.7 }
     }
 
