@@ -3,6 +3,7 @@ use std::sync::{Arc, Mutex};
 use num::Complex;
 use std::time::{Instant,Duration};
 use std::ops::Add;
+use regex::Regex;
 
 pub fn higher() {
     println!();
@@ -207,12 +208,23 @@ fn grep_lite() {
     let mut ctx: Vec<Vec<(usize, String)>> = vec![];
     let a = String::new();
 
+    let re = Regex::new("animation").unwrap();
     for (i, line) in quote.lines().enumerate() {
-        if line.contains(search_term) {
-            tags.push(i);
+        // if line.contains(search_term) {
+        //     tags.push(i);
+        //
+        //     let v = Vec::with_capacity(2 * ctx_lines + 1);
+        //     ctx.push(v);
+        // }
+        let contains_substring = re.find(line);
+        match contains_substring {
+            Some(_) => {
+                tags.push(i);
 
-            let v = Vec::with_capacity(2 * ctx_lines + 1);
-            ctx.push(v);
+                let v = Vec::with_capacity(2 * ctx_lines + 1);
+                ctx.push(v);
+            },
+            None => (),
         }
     }
 
