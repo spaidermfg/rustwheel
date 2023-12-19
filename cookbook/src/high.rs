@@ -4,6 +4,7 @@ use num::Complex;
 use std::time::{Instant,Duration};
 use std::ops::Add;
 use regex::Regex;
+use clap::{Arg,App};
 
 pub fn higher() {
     println!();
@@ -19,6 +20,8 @@ pub fn higher() {
     test_add_portal();
     grep_lite();
     create_array();
+
+    command();
 }
 
 fn handle_csv() {
@@ -206,7 +209,6 @@ fn grep_lite() {
 
     let mut tags: Vec<usize> = vec![];
     let mut ctx: Vec<Vec<(usize, String)>> = vec![];
-    let a = String::new();
 
     let re = Regex::new("animation").unwrap();
     for (i, line) in quote.lines().enumerate() {
@@ -279,5 +281,27 @@ fn create_array() {
             sum += a[i];
         }
         println!("\t(∑{:?} = {})", a, sum);
+    }
+}
+
+fn command() {
+    let args = App::new("grep-lite").version("v1.0.0")
+        .about("searches for patterns")
+        .arg(Arg::with_name("pattern")
+            .help("The pattern to search for")
+            .takes_value(true)
+            .required(true)).get_matches();
+
+    let pattern = args.value_of("pattern").unwrap();
+    let re = Regex::new(pattern).unwrap();
+
+    let quote = "WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. \
+    Wasm is designed as a portable compilation target for programming languages, \
+    enabling deployment on the web for client and server applications.";
+    for line in quote.lines() {
+        match re.find(line) {
+            Some(_) => println!("{}", line),
+            None => (),
+        }
     }
 }
