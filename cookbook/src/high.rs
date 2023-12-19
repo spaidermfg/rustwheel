@@ -1,3 +1,5 @@
+use std::fs::{File, read};
+use std::io::{BufRead, BufReader};
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
 use num::Complex;
@@ -21,7 +23,9 @@ pub fn higher() {
     grep_lite();
     create_array();
 
+    read_file();
     command();
+
 }
 
 fn handle_csv() {
@@ -290,18 +294,33 @@ fn command() {
         .arg(Arg::with_name("pattern")
             .help("The pattern to search for")
             .takes_value(true)
+            .required(true))
+        .arg(Arg::with_name("input")
+            .help("File to search")
+            .takes_value(true)
             .required(true)).get_matches();
 
     let pattern = args.value_of("pattern").unwrap();
     let re = Regex::new(pattern).unwrap();
 
-    let quote = "WebAssembly (abbreviated Wasm) is a binary instruction format for a stack-based virtual machine. \
-    Wasm is designed as a portable compilation target for programming languages, \
-    enabling deployment on the web for client and server applications.";
-    for line in quote.lines() {
-        match re.find(line) {
+    let input = args.value_of("input").unwrap();
+    let f = File::open(input).unwrap();
+    let reader = BufReader::new(f);
+
+    for line_ in reader.lines() {
+        let line = line_.unwrap();
+        match re.find(&line) {
             Some(_) => println!("{}", line),
             None => (),
         }
+    }
+}
+
+fn read_file() {
+    let f = File::open("Cargo.toml").unwrap();
+    let reader = BufReader::new(f);
+    for line_ in reader.lines() {
+        let line = line_.unwrap();
+        println!("{}-{} bytes long", line, line.len());
     }
 }
