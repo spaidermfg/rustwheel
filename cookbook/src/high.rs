@@ -328,6 +328,10 @@ fn read_file() {
 fn process_lines<T: BufRead + Sized>(reader: T, re: Regex) {
     for line_ in reader.lines() {
         let line = line_.unwrap();
+        if line == "exit" {
+            break
+        }
+
         match re.find(&line) {
             Some(_) => println!("find: {}", line),
             None => println!("Is null input"),

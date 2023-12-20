@@ -1,3 +1,4 @@
+use std::fmt::Debug;
 use crate::enums::enum_mind;
 use crate::high::higher;
 use crate::param::param_cmd;
@@ -11,6 +12,7 @@ mod param;
 mod tar;
 mod enums;
 mod high;
+mod complex;
 
 fn main() {
     println!("Hello, Cookbook!");
@@ -26,4 +28,6 @@ fn main() {
     enum_mind();
 
     higher();
+
+    complex::complex_process();
 }
