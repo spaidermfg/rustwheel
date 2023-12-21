@@ -8,12 +8,24 @@ pub fn complex_process() {
 
 // 使用普通函数对API进行实验
 fn file_main() {
-    let mut f1 = File::from("a.txt");
+    let mut f1 = File{
+        name: String::from(""),
+        data: Vec::new(),
+    };
     open(&mut f1);
     close(&mut f1);
+
+    let f1_name = &f1.name;
+    let f1_length = &f1.data.len();
+    println!("{:?}", f1);
+    println!("name: {} is {} bytes long", f1_name, f1_length)
 }
 
-type File = String;
+#[derive(Debug)]
+struct File {
+    name: String,
+    data: Vec<u8>,
+}
 
 fn open(f: &mut File) -> bool {
     true
