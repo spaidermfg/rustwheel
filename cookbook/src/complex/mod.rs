@@ -8,12 +8,12 @@ pub fn complex_process() {
 
 // 使用普通函数对API进行实验
 fn file_main() {
-    let mut f1 = File::new("hello.txt");
-    f1.data = vec![114, 117,115,116,33];
+    let vec_data =vec![114, 117,115,116,33];
+    let mut f1 = File::new_with_data("hello.txt", &vec_data);
 
     let mut buffer: Vec<u8> = Vec::new();
     open(&mut f1);
-    let f1_length = read(&mut f1,&mut buffer);
+    let f1_length = f1.read(&mut buffer);
     close(&mut f1);
 
     // 将Vec<u8>转换为String，任何无效UTF-8字符都会被转换为特殊字符
@@ -37,6 +37,21 @@ impl File {
             data: Vec::new(),
         }
     }
+
+    fn new_with_data(name: &str, data: &Vec<u8>) -> File {
+        let mut f = File::new(name);
+        f.data = data.clone();
+        f
+    }
+
+    fn read(self: &mut File, save_to: &mut Vec<u8>) -> usize {
+        let mut tmp = self.data.clone();
+        let tmp_length = tmp.len();
+
+        save_to.reserve(tmp_length);
+        save_to.append(&mut tmp);  // append会将other vec清空
+        tmp_length
+    }
 }
 
 fn open(f: &mut File) -> bool {
@@ -48,14 +63,3 @@ fn close(f: &mut File) -> bool {
 }
 
 // ! 代表函数永不返回
-#[allow(dead_code)]
-fn read(f: &mut File, save_to: &mut Vec<u8>) -> usize {
-    let mut tmp = f.data.clone();
-    let tmp_length = tmp.len();
-
-    save_to.reserve(tmp_length);
-    // append会将other vec清空
-    save_to.append(&mut tmp);
-    tmp_length
-}
-
