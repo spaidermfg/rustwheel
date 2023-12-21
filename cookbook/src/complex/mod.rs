@@ -1,7 +1,4 @@
 #![allow(unused_variables)]
-
-use std::fs::read_to_string;
-
 pub fn complex_process() {
     println!("[complex type]");
 
@@ -11,10 +8,8 @@ pub fn complex_process() {
 
 // 使用普通函数对API进行实验
 fn file_main() {
-    let mut f1 = File{
-        name: String::from("hello.txt"),
-        data: vec![114, 117,115,116,33],
-    };
+    let mut f1 = File::new("hello.txt");
+    f1.data = vec![114, 117,115,116,33];
 
     let mut buffer: Vec<u8> = Vec::new();
     open(&mut f1);
@@ -33,6 +28,15 @@ fn file_main() {
 struct File {
     name: String,
     data: Vec<u8>,
+}
+
+impl File {
+    fn new(name: &str) -> File {
+        File{
+            name: String::from(name),
+            data: Vec::new(),
+        }
+    }
 }
 
 fn open(f: &mut File) -> bool {
