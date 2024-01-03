@@ -1,14 +1,22 @@
 #![allow(unused_variables)]
+
+use std::fs::read;
+use std::panic::panic_any;
+use clap::ErrorKind::WrongNumberOfValues;
+use clap::Format::Error;
+
 pub fn complex_process() {
     println!("[complex type]");
 
     file_main();
 }
 
+// 可变静态全局变量
+static mut ERROR: i32 =  0;
 
 // 使用普通函数对API进行实验
 fn file_main() {
-    let vec_data =vec![114, 117,115,116,33];
+    let vec_data = vec![114, 117,115,116,33];
     let mut f1 = File::new_with_data("hello.txt", &vec_data);
 
     let mut buffer: Vec<u8> = Vec::new();
@@ -63,3 +71,20 @@ fn close(f: &mut File) -> bool {
 }
 
 // ! 代表函数永不返回
+
+fn unsafe_err() {
+    let mut f = File::new("hello.txt");
+
+    // 访问并修改可变静态变量，必须使用unsafe
+    unsafe {
+        if ERROR != 0 {
+            panic!("An error has occurred while reading the file.")
+        }
+    }
+    close(&mut f);
+    unsafe {
+        if ERROR != 0 {
+            panic!("An error has occurred while closing the file.")
+        }
+    }
+}
