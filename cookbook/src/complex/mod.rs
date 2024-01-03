@@ -1,13 +1,19 @@
 #![allow(unused_variables)]
 
+mod impl_three;
+
 pub fn complex_process() {
     println!("[complex type]");
 
     file_main();
+
+    unsafe_err();
+
+    impl_three::impl_three();
 }
 
 // 可变静态全局变量
-static mut ERROR: i32 =  0;
+static mut ERROR: isize =  0;
 
 // 使用普通函数对API进行实验
 fn file_main() {
