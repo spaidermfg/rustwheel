@@ -1,10 +1,5 @@
 #![allow(unused_variables)]
 
-use std::fs::read;
-use std::panic::panic_any;
-use clap::ErrorKind::WrongNumberOfValues;
-use clap::Format::Error;
-
 pub fn complex_process() {
     println!("[complex type]");
 
