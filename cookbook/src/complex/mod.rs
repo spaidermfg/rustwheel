@@ -10,6 +10,8 @@ pub fn complex_process() {
     unsafe_err();
 
     impl_three::impl_three();
+
+    use_parse_log();
 }
 
 // 可变静态全局变量
@@ -104,4 +106,38 @@ fn one_in(denominator: u32) -> bool {
     // 创建一个线程局部随机数生成器
     // n/m的概率返回布尔值
     thread_rng().gen_ratio(1, denominator)
+}
+
+// 枚举体用来表示多个已知的变体
+enum Event {
+    Update,
+    Delete,
+    Unknown
+}
+
+type Message = String;
+
+fn parse_log(line: &str) -> Result<Event, Message> {
+    let parts: Vec<_> = line.splitn(2,' ').collect();
+    if parts.len() == 1 {
+       return Err(line.parse().unwrap());
+    }
+
+    let event = parts[0];
+    let rest = String::from(parts[1]);
+    match event {
+        _  => Ok(Event::Unknown),
+        "UPDATE" | "update" => Ok(Event::Update),
+        "DELETE" | "delete" => Ok(Event::Delete)
+    }
+}
+
+fn use_parse_log() {
+    let log = "BEGIN Hello world!\
+    UPDATE update from user set a = 1 where b = 2;\
+    delete delete user where a = 4;";
+    for line in log.lines() {
+        let result = parse_log(line);
+        println!("{}", line);
+    }
 }

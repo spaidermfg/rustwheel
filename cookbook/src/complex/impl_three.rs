@@ -20,11 +20,11 @@ struct File;
 
 
 fn read(f: &File, save_to: &mut Vec<u8>) -> usize {
-    //if random() && random() && random() {
+    if random() && random() && random() {
         unsafe {
             ERROR = 1;
         }
-    //}
+    }
     0
 }
 
