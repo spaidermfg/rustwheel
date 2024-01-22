@@ -109,6 +109,7 @@ fn one_in(denominator: u32) -> bool {
 }
 
 // 枚举体用来表示多个已知的变体
+#[derive(Debug)]
 enum Event {
     Update,
     Delete,
@@ -125,19 +126,20 @@ fn parse_log(line: &str) -> (Event, Message) {
 
     let event = parts[0];
     let rest = String::from(parts[1]);
+
     match event {
-        _  => (Event::Unknown, rest),
         "UPDATE" | "update" => (Event::Update, rest),
-        "DELETE" | "delete" => (Event::Delete, rest)
+        "DELETE" | "delete" => (Event::Delete, rest),
+        _  => (Event::Unknown, rest)
     }
 }
 
 fn use_parse_log() {
-    let log = "BEGIN Hello world!
-UPDATE update from user set a = 1 where b = 2;
+    let log = "BEGIN Hello world!\r
+UPDATE update from user set a = 1 where b = 2;\r
 delete delete user where a = 4;";
     for line in log.lines() {
         let result = parse_log(line);
-        println!("{:?}", line);
+        println!("{:?}", result);
     }
 }
