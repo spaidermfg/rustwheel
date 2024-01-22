@@ -21,15 +21,15 @@ fn file_main() {
     let mut f1 = File::new_with_data("hello.txt", &vec_data);
 
     let mut buffer: Vec<u8> = Vec::new();
-    open(&mut f1);
-    let f1_length = f1.read(&mut buffer);
-    close(&mut f1);
+    f1 = open(f1).unwrap();
+    let f1_length = f1.read(&mut buffer).unwrap();
+    f1 = close(f1).unwrap();
 
     // 将Vec<u8>转换为String，任何无效UTF-8字符都会被转换为特殊字符
     let text = String::from_utf8_lossy(&buffer);
 
     println!("{:?}", f1);
-    println!("name: {} is {:?} bytes long", &f1.name, f1_length);
+    println!("name: {} is {} bytes long", &f1.name, f1_length);
     println!("{}", text);
 }
 
@@ -92,7 +92,7 @@ fn unsafe_err() {
             panic!("An error has occurred while reading the file.")
         }
     }
-    close(&mut f);
+    close(f).unwrap();
     unsafe {
         if ERROR != 0 {
             panic!("An error has occurred while closing the file.")
