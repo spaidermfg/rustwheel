@@ -117,27 +117,27 @@ enum Event {
 
 type Message = String;
 
-fn parse_log(line: &str) -> Result<Event, Message> {
+fn parse_log(line: &str) -> (Event, Message) {
     let parts: Vec<_> = line.splitn(2,' ').collect();
     if parts.len() == 1 {
-       return Err(line.parse().unwrap());
+       return (Event::Unknown,String::from(line));
     }
 
     let event = parts[0];
     let rest = String::from(parts[1]);
     match event {
-        _  => Ok(Event::Unknown),
-        "UPDATE" | "update" => Ok(Event::Update),
-        "DELETE" | "delete" => Ok(Event::Delete)
+        _  => (Event::Unknown, rest),
+        "UPDATE" | "update" => (Event::Update, rest),
+        "DELETE" | "delete" => (Event::Delete, rest)
     }
 }
 
 fn use_parse_log() {
-    let log = "BEGIN Hello world!\
-    UPDATE update from user set a = 1 where b = 2;\
-    delete delete user where a = 4;";
+    let log = "BEGIN Hello world!
+UPDATE update from user set a = 1 where b = 2;
+delete delete user where a = 4;";
     for line in log.lines() {
         let result = parse_log(line);
-        println!("{}", line);
+        println!("{:?}", line);
     }
 }
