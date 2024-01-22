@@ -1,5 +1,5 @@
 #![allow(unused_variables)]
-
+use rand::prelude::*;
 mod impl_three;
 
 pub fn complex_process() {
@@ -29,7 +29,7 @@ fn file_main() {
     let text = String::from_utf8_lossy(&buffer);
 
     println!("{:?}", f1);
-    println!("name: {} is {} bytes long", &f1.name, f1_length);
+    println!("name: {} is {:?} bytes long", &f1.name, f1_length);
     println!("{}", text);
 }
 
@@ -53,22 +53,32 @@ impl File {
         f
     }
 
-    fn read(self: &mut File, save_to: &mut Vec<u8>) -> usize {
+    fn read(self: &mut File, save_to: &mut Vec<u8>) -> Result<usize, String> {
         let mut tmp = self.data.clone();
         let tmp_length = tmp.len();
 
         save_to.reserve(tmp_length);
         save_to.append(&mut tmp);  // append会将other vec清空
-        tmp_length
+        Ok(tmp_length)
     }
 }
 
-fn open(f: &mut File) -> bool {
-    true
+fn open(f: File) -> Result<File, String> {
+    // 执行10000次，有一次失败
+    if one_in(10_000) {
+        let err_msg = String::from("Permission denied");
+        return Err(err_msg);
+    }
+
+    Ok(f)
 }
 
-fn close(f: &mut File) -> bool {
-    true
+fn close(f: File) -> Result<File, String> {
+    if one_in(10_000) {
+        let err_msg = String::from("");
+        return Err(err_msg)
+    }
+    Ok(f)
 }
 
 // ! 代表函数永不返回
@@ -88,4 +98,10 @@ fn unsafe_err() {
             panic!("An error has occurred while closing the file.")
         }
     }
+}
+
+fn one_in(denominator: u32) -> bool {
+    // 创建一个线程局部随机数生成器
+    // n/m的概率返回布尔值
+    thread_rng().gen_ratio(1, denominator)
 }
