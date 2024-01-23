@@ -1,8 +1,8 @@
 #![allow(unused_variables)]
 
-use std::fmt::{Display, Formatter, write};
-use ansi_term::unstyled_len;
+use std::fmt::{Display, Formatter};
 use rand::prelude::*;
+
 mod impl_three;
 
 pub fn complex_process() {
@@ -38,6 +38,10 @@ fn file_main() {
     println!("{:?}", f1);
     println!("name: {} is {} bytes long", &f1.name, f1_length);
     println!("{}", text);
+
+    let f4 = File::new("abc.java");
+    println!("f4: {:?}", f4);
+    println!("f4: {}", f4);
 }
 
 #[derive(Debug)]
@@ -50,7 +54,7 @@ struct File {
 // 要为结构体实现trait，结构体中的字段也需要实现该trait
 impl Display for File {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.name, self.state)
+        write!(f, "{} >>> ({})", self.name, self.state)
     }
 }
 
