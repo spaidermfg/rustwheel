@@ -189,6 +189,7 @@ impl Display for FileState {
 
 // trait 让编译器和开发者知道，有多个类型试图执行同一个任务
 // trait关键字用于定义一个trait，impl关键字用来给一个具体的类型附加上某个trait
+// trait用来表示某些不同的类型所具有的共同行为
 #[derive(Debug)]
 struct Video;
 trait Play {
