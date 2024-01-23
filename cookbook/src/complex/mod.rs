@@ -1,5 +1,6 @@
 #![allow(unused_variables)]
 
+use std::fmt::{Display, Formatter, write};
 use ansi_term::unstyled_len;
 use rand::prelude::*;
 mod impl_three;
@@ -44,6 +45,12 @@ struct File {
     name: String,
     data: Vec<u8>,
     state: FileState,
+}
+
+impl Display for File {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{} {}", self.name, self.state)
+    }
 }
 
 impl File {
@@ -163,6 +170,17 @@ enum FileState {
     Open,
     Closed,
 }
+
+// 为FileState实现Display trait
+impl Display for FileState {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        match *self {
+            FileState::Open => write!(f, "OPEN"),
+            FileState::Closed => write!(f, "ClOSE")
+        }
+    }
+}
+
 
 // trait 让编译器和开发者知道，有多个类型试图执行同一个任务
 // trait关键字用于定义一个trait，impl关键字用来给一个具体的类型附加上某个trait
