@@ -47,6 +47,7 @@ struct File {
     state: FileState,
 }
 
+// 要为结构体实现trait，结构体中的字段也需要实现该trait
 impl Display for File {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} {}", self.name, self.state)
