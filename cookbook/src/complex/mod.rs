@@ -160,3 +160,5 @@ enum FileState {
     Closed,
 }
 
+// trait 让编译器和开发者知道，有多个类型试图执行同一个任务
+
