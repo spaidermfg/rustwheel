@@ -1,4 +1,6 @@
 #![allow(unused_variables)]
+
+use ansi_term::unstyled_len;
 use rand::prelude::*;
 mod impl_three;
 
@@ -12,6 +14,8 @@ pub fn complex_process() {
     impl_three::impl_three();
 
     use_parse_log();
+
+    play_video();
 }
 
 // 可变静态全局变量
@@ -161,4 +165,25 @@ enum FileState {
 }
 
 // trait 让编译器和开发者知道，有多个类型试图执行同一个任务
+// trait关键字用于定义一个trait，impl关键字用来给一个具体的类型附加上某个trait
+#[derive(Debug)]
+struct Video;
+trait Play {
+    fn begin(self: &Self, save_to: &mut Vec<u8>) -> Result<usize, String>;
+}
+
+// 为Video类型实现Play trait
+impl Play for Video {
+    fn begin(self: &Self, save_to: &mut Vec<u8>) -> Result<usize, String> {
+        Ok(67)
+    }
+}
+
+fn play_video() {
+    let v = Video{};
+    let mut buffer = vec!();
+    let result = v.begin(&mut buffer).unwrap();
+    println!("{} bytes read from {:?}", result, v);
+}
+
 
