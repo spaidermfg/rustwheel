@@ -39,6 +39,7 @@ fn file_main() {
 struct File {
     name: String,
     data: Vec<u8>,
+    state: FileState,
 }
 
 impl File {
@@ -46,6 +47,7 @@ impl File {
         File{
             name: String::from(name),
             data: Vec::new(),
+            state: FileState::Closed,
         }
     }
 
@@ -56,6 +58,10 @@ impl File {
     }
 
     fn read(self: &mut File, save_to: &mut Vec<u8>) -> Result<usize, String> {
+        if self.state != FileState::Open {
+            return Err(String::from("File must be open for reading"));
+        }
+
         let mut tmp = self.data.clone();
         let tmp_length = tmp.len();
 
@@ -65,28 +71,29 @@ impl File {
     }
 }
 
-fn open(f: File) -> Result<File, String> {
+fn open(mut f: File) -> Result<File, String> {
     // 执行10000次，有一次失败
     if one_in(10_000) {
         let err_msg = String::from("Permission denied");
         return Err(err_msg);
     }
-
+    f.state = FileState::Open;
     Ok(f)
 }
 
-fn close(f: File) -> Result<File, String> {
+fn close(mut f: File) -> Result<File, String> {
     if one_in(10_000) {
         let err_msg = String::from("");
         return Err(err_msg)
     }
+    f.state = FileState::Closed;
     Ok(f)
 }
 
 // ! 代表函数永不返回
 
 fn unsafe_err() {
-    let mut f = File::new("hello.txt");
+    let f = File::new("hello.txt");
 
     // 访问并修改可变静态变量，必须使用unsafe
     unsafe {
@@ -111,6 +118,7 @@ fn one_in(denominator: u32) -> bool {
 // 枚举体用来表示多个已知的变体
 // 枚举支持使用impl块来实现方法
 // 枚举体中可以包含数据
+// 引入字符串形式数据可以考虑使用枚举类型
 #[derive(Debug)]
 enum Event {
     Update,
@@ -145,3 +153,10 @@ delete delete user where a = 4;";
         println!("{:?}", result);
     }
 }
+
+#[derive(Debug,PartialOrd, PartialEq)]
+enum FileState {
+    Open,
+    Closed,
+}
+
