@@ -109,6 +109,8 @@ fn one_in(denominator: u32) -> bool {
 }
 
 // 枚举体用来表示多个已知的变体
+// 枚举支持使用impl块来实现方法
+// 枚举体中可以包含数据
 #[derive(Debug)]
 enum Event {
     Update,
