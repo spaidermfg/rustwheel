@@ -1,4 +1,5 @@
 #![allow(unused_variables)]
+//! Simulating files one step at a time.
 
 use std::fmt::{Display, Formatter};
 use rand::prelude::*;
