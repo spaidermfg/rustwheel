@@ -60,6 +60,7 @@ impl Display for File {
 }
 
 impl File {
+    /// create a file struct
     fn new(name: &str) -> File {
         File{
             name: String::from(name),
@@ -68,12 +69,14 @@ impl File {
         }
     }
 
+    /// create a file struct with data
     fn new_with_data(name: &str, data: &Vec<u8>) -> File {
         let mut f = File::new(name);
         f.data = data.clone();
         f
     }
 
+    /// read content save to new file
     fn read(self: &mut File, save_to: &mut Vec<u8>) -> Result<usize, String> {
         if self.state != FileState::Open {
             return Err(String::from("File must be open for reading"));
@@ -88,6 +91,7 @@ impl File {
     }
 }
 
+/// open the file
 fn open(mut f: File) -> Result<File, String> {
     // 执行10000次，有一次失败
     if one_in(10_000) {
@@ -98,6 +102,7 @@ fn open(mut f: File) -> Result<File, String> {
     Ok(f)
 }
 
+/// close the file
 fn close(mut f: File) -> Result<File, String> {
     if one_in(10_000) {
         let err_msg = String::from("");
@@ -132,10 +137,10 @@ fn one_in(denominator: u32) -> bool {
     thread_rng().gen_ratio(1, denominator)
 }
 
-// 枚举体用来表示多个已知的变体
-// 枚举支持使用impl块来实现方法
-// 枚举体中可以包含数据
-// 引入字符串形式数据可以考虑使用枚举类型
+/// 枚举体用来表示多个已知的变体
+/// 枚举支持使用impl块来实现方法
+/// 枚举体中可以包含数据
+/// 引入字符串形式数据可以考虑使用枚举类型
 #[derive(Debug)]
 enum Event {
     Update,
@@ -188,16 +193,16 @@ impl Display for FileState {
 }
 
 
-// trait 让编译器和开发者知道，有多个类型试图执行同一个任务
-// trait关键字用于定义一个trait，impl关键字用来给一个具体的类型附加上某个trait
-// trait用来表示某些不同的类型所具有的共同行为
+/// trait 让编译器和开发者知道，有多个类型试图执行同一个任务
+/// trait关键字用于定义一个trait，impl关键字用来给一个具体的类型附加上某个trait
+/// trait用来表示某些不同的类型所具有的共同行为
 #[derive(Debug)]
 struct Video;
 trait Play {
     fn begin(self: &Self, save_to: &mut Vec<u8>) -> Result<usize, String>;
 }
 
-// 为Video类型实现Play trait
+/// 为Video类型实现Play trait
 impl Play for Video {
     fn begin(self: &Self, save_to: &mut Vec<u8>) -> Result<usize, String> {
         Ok(67)
