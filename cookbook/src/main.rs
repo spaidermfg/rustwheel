@@ -13,6 +13,7 @@ mod tar;
 mod enums;
 mod high;
 mod complex;
+mod lifetime;
 
 fn main() {
     println!("Hello, Cookbook!");
@@ -30,4 +31,6 @@ fn main() {
     higher();
 
     complex::complex_process();
+
+    lifetime::life_time();
 }
