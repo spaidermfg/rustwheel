@@ -61,6 +61,10 @@ impl Display for File {
 
 impl File {
     /// create a file struct
+    ///  # Example
+    /// ```
+    /// let f = File::new("example.txt");
+    /// ```
     fn new(name: &str) -> File {
         File{
             name: String::from(name),
