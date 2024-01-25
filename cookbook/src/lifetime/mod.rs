@@ -1,4 +1,6 @@
 //! lifetime,ownership，borrow
+//! Rust中基本类型实现了Copy trait，所以可以被隐式借用
+//! 基本类型都具有复制语义，其他类型都具有移动语义
 #![allow(unused_variables)]
 pub fn life_time() {
     println!("{}", "---".repeat(12));
@@ -6,6 +8,7 @@ pub fn life_time() {
     let sat_b = CubeSat::new(2);
     let sat_c = CubeSat::new(3);
 
+    /// 当值还没有被借用时，重新绑定该值是合法的
     let a_status = check_status(sat_a);
     let b_status = check_status(sat_b);
     let c_status = check_status(sat_c);
