@@ -1,4 +1,4 @@
-//! lifetime，所有权，borrow
+//! lifetime,ownership，borrow
 pub fn life_time() {
 
 }
