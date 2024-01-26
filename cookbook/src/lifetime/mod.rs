@@ -1,6 +1,9 @@
 //! lifetime,ownership，borrow
 //! Rust中基本类型实现了Copy trait，所以可以被隐式借用
 //! 基本类型都具有复制语义，其他类型都具有移动语义
+//! # 解决所有权的方法
+//! * 在不需要完整所有权的地方，使用引用
+//! * 减少生命周期长的值
 #![allow(unused_variables)]
 pub fn life_time() {
     println!("{}", "---".repeat(12));
@@ -20,17 +23,33 @@ pub fn life_time() {
     println!("{:?} {:?} {:?}", a_status, b_status, c_status);
 }
 
+// 卫星
 #[derive(Debug)]
 struct CubeSat {
     id: u64,
+    mailBox: MailBox,
 }
+
+#[derive(Debug)]
+struct MailBox {
+    messages: Vec<Message>
+}
+
+// 地面站
+struct GroundStation;
+
+type Message = String;
 
 impl CubeSat {
     fn new(sat_id: u64) -> CubeSat {
-        CubeSat{ id: sat_id}
+        CubeSat{
+            id: sat_id,
+            mailBox: Default::default()
+        }
     }
 }
 
+// 状态消息
 #[derive(Debug)]
 enum StatusMessage {
     Ok,
