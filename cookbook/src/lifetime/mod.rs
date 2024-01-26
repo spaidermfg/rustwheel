@@ -9,10 +9,10 @@ pub fn life_time() {
     let sat_c = CubeSat::new(3);
 
     /// 当值还没有被借用时，重新绑定该值是合法的
-    let a_status = check_status(sat_a);
-    let b_status = check_status(sat_b);
-    let c_status = check_status(sat_c);
-    println!("{:?} {:?} {:?}", a_status, b_status, c_status);
+    let sat_a = check_status(sat_a);
+    let sat_b = check_status(sat_b);
+    let sat_c = check_status(sat_c);
+    println!("{:?} {:?} {:?}", sat_a, sat_b, sat_c);
 
     let a_status = check_status(sat_a);
     let b_status = check_status(sat_b);
@@ -36,6 +36,7 @@ enum StatusMessage {
     Ok,
 }
 
-fn check_status(sat_id: CubeSat) -> StatusMessage {
-    StatusMessage::Ok
+fn check_status(sat_id: CubeSat) -> CubeSat {
+    println!("{:?} {:?}", sat_id, StatusMessage::Ok);
+    sat_id
 }
