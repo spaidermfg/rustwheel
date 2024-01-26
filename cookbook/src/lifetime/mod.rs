@@ -5,6 +5,9 @@
 //! * 在不需要完整所有权的地方，使用引用
 //! * 减少生命周期长的值
 #![allow(unused_variables)]
+
+use rand::distributions::Open01;
+
 pub fn life_time() {
     println!("{}", "---".repeat(12));
     let sat_a = CubeSat::new(1);
@@ -38,6 +41,13 @@ struct MailBox {
 // 地面站
 struct GroundStation;
 
+impl GroundStation {
+    // 发送消息
+    fn send(&self, to: &mut CubeSat, msg: Message) {
+        to.mailBox.messages.push(msg);
+    }
+}
+
 type Message = String;
 
 impl CubeSat {
@@ -46,6 +56,11 @@ impl CubeSat {
             id: sat_id,
             mailBox: Default::default()
         }
+    }
+
+    // 接收消息
+    fn recv(&mut self) -> Option<Message> {
+        self.mailBox.messages.pop()
     }
 }
 
