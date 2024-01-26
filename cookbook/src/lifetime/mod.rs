@@ -6,8 +6,6 @@
 //! * 减少生命周期长的值
 #![allow(unused_variables)]
 
-use rand::distributions::Open01;
-
 pub fn life_time() {
     println!("{}", "---".repeat(12));
     let sat_a = CubeSat::new(1);
@@ -24,6 +22,17 @@ pub fn life_time() {
     let b_status = check_status(sat_b);
     let c_status = check_status(sat_c);
     println!("{:?} {:?} {:?}", a_status, b_status, c_status);
+
+    // 创建地面站
+    let base = GroundStation::new();
+    let mut sat_d = CubeSat::new(8);
+
+    println!("[sat_d]: {:?}", sat_d);
+    base.send(&mut sat_d, Message::from("We choose go to the moon!"));
+    println!("[sat_d]: {:?}", sat_d);
+
+    let msg = sat_d.recv();
+    println!("[recv]: {:?}", msg);
 }
 
 // 卫星
@@ -42,6 +51,10 @@ struct MailBox {
 struct GroundStation;
 
 impl GroundStation {
+    fn new() -> GroundStation {
+        GroundStation{}
+    }
+
     // 发送消息
     fn send(&self, to: &mut CubeSat, msg: Message) {
         to.mailBox.messages.push(msg);
@@ -54,7 +67,7 @@ impl CubeSat {
     fn new(sat_id: u64) -> CubeSat {
         CubeSat{
             id: sat_id,
-            mailBox: Default::default()
+            mailBox: MailBox{ messages: vec![] }
         }
     }
 
