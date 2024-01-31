@@ -2,7 +2,7 @@
 //! Rust中基本类型实现了Copy trait，所以可以被隐式借用
 //! 基本类型都具有复制语义，其他类型都具有移动语义
 //! # 解决所有权的方法
-//! * 在不需要完整所有权的地方，使用引用
+//! * 在不需要完整所有权的地方，使用引用(&T, &mut T)
 //! * 减少生命周期长的值
 //! # 所有权移动的方法
 //! * 通过赋值
@@ -30,14 +30,22 @@ pub fn life_time() {
 
     // 创建地面站
     let base = GroundStation::new();
-    let mut sat_d = CubeSat::new(8);
+    let mut mail = MailBox{messages: vec![]};
 
-    println!("[sat_d]: {:?}", sat_d);
-    base.send(&mut sat_d, Message::from("We choose go to the moon!"));
-    println!("[sat_d]: {:?}", sat_d);
+    // 向卫星发送信息
+    let sat_ids = fetch_sat_ids();
+    for sat_id in sat_ids {
+        let mut sat = base.connect(sat_id);
+        base.send(&mut mail, &mut sat, Message{to: sat_id, content: String::from(print!("Hello {}", sat_id))});
+    }
 
-    let msg = sat_d.recv();
-    println!("[recv]: {:?}", msg);
+    // 卫星接收信息
+    let sat_ids = fetch_sat_ids();
+    for sat_id in sat_ids {
+        let sat = base.connect(sat_id);
+        let msg = sat.recv(&mut mail);
+        println!("SAT: {:?} 的MESSAGE：{:?}", sat, msg)
+    }
 }
 
 // 人造卫星
@@ -48,7 +56,7 @@ struct CubeSat {
 }
 
 impl CubeSat {
-    fn new(sat_id: u64) -> CubeSat {
+fn new(sat_id: u64) -> CubeSat {
         CubeSat {
             id: sat_id,
             mailBox: MailBox { messages: vec![] },
@@ -56,9 +64,13 @@ impl CubeSat {
     }
 
     // 接收消息
-    fn recv(&mut self) -> Option<Message> {
-        self.mailBox.messages.pop()
+    fn recv(&self, mail_box: &mut MailBox) -> Option<Message> {
+        mail_box.deliver(&self)
     }
+}
+
+fn fetch_sat_ids() -> Vec<u64> {
+    vec![1,2,3,4]
 }
 
 // 地面站 用户和卫星的中介
@@ -70,8 +82,15 @@ impl GroundStation {
     }
 
     // 发送消息
-    fn send(&self, to: &mut CubeSat, msg: Message) {
-        to.mailBox.messages.push(msg);
+    fn send(&self, mail_box: &mut MailBox, to: &CubeSat, msg: Message) {
+        mail_box.post(msg)
+    }
+
+    fn connect(&self, sat_id: u64) -> CubeSat {
+        CubeSat {
+            id: sat_id,
+            mailBox: MailBox {messages: vec![]}
+        }
     }
 }
 
@@ -81,8 +100,30 @@ struct MailBox {
     messages: Vec<Message>,
 }
 
+impl MailBox {
+    // 发送消息
+    fn post(&mut self, msg: Message) {
+        self.messages.push(msg);
+    }
+
+    // 查找消息
+    fn deliver(&mut self, recipient: &CubeSat) -> Option<Message> {
+        for i in 0..self.messages.len() {
+            if self.messages[i].to == recipient.id {
+                let msg = self.messages.remove(i);
+                return Some(msg)
+            }
+        }
+        None
+    }
+}
+
 // 消息，地面站发送，卫星接受
-type Message = String;
+#[derive(Debug)]
+struct Message {
+    to: u64,
+    content: String
+}
 
 // 卫星状态消息
 #[derive(Debug)]
