@@ -1,25 +1,24 @@
-use std::fs::File;
-use std::io::Error;
-use flate2::Compression;
 use flate2::read::GzDecoder;
 use flate2::write::GzEncoder;
-use tar::{Builder, Archive};
+use flate2::Compression;
+use std::fs::File;
+use std::io::Error;
+use tar::{Archive, Builder};
 
 pub fn tar_handler() {
     let a = unpack_tar_gz();
 
     match a {
         Ok(res) => println!("unpack ok: {:?}", res),
-        Err(error) => println!("unpack err: {}", error)
+        Err(error) => println!("unpack err: {}", error),
     }
 
     let pack = pack_tar_gz();
     match pack {
         Ok(()) => println!("pack success"),
-        Err(error) => println!("pack err: {}", error)
+        Err(error) => println!("pack err: {}", error),
     }
 }
-
 
 fn unpack_tar_gz() -> Result<&'static str, Error> {
     let tar_path = "archive.tar.gz";

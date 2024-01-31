@@ -18,7 +18,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let module = Module::new(&store, wasm_bytes)?;
     let (stdout_tx, mut stdout_rx) = Pipe::channel();
 
-    WasiEnv::builder("hello").stdout(Box::new(stdout_tx)).run_with_store(module, &mut store)?;
+    WasiEnv::builder("hello")
+        .stdout(Box::new(stdout_tx))
+        .run_with_store(module, &mut store)?;
 
     let mut buf = String::new();
     stdout_rx.read_to_string(&mut buf).unwrap();
@@ -30,5 +32,5 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 #[test]
 #[cfg(feature = "wasi")]
 fn test_wasi() -> Result<(), Box<dyn std::error::Error>> {
-     main()
+    main()
 }

@@ -1,19 +1,19 @@
-use std::fmt::Debug;
 use crate::enums::enum_mind;
 use crate::high::higher;
 use crate::param::param_cmd;
 use crate::random::rand_num;
 use crate::sort::sort_thing;
 use crate::tar::tar_handler;
+use std::fmt::Debug;
 
-mod random;
-mod sort;
-mod param;
-mod tar;
+mod complex;
 mod enums;
 mod high;
-mod complex;
 mod lifetime;
+mod param;
+mod random;
+mod sort;
+mod tar;
 
 fn main() {
     println!("Hello, Cookbook!");

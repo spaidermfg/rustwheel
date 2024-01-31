@@ -44,7 +44,7 @@ struct CubeSat {
 
 #[derive(Debug)]
 struct MailBox {
-    messages: Vec<Message>
+    messages: Vec<Message>,
 }
 
 // 地面站
@@ -52,7 +52,7 @@ struct GroundStation;
 
 impl GroundStation {
     fn new() -> GroundStation {
-        GroundStation{}
+        GroundStation {}
     }
 
     // 发送消息
@@ -65,9 +65,9 @@ type Message = String;
 
 impl CubeSat {
     fn new(sat_id: u64) -> CubeSat {
-        CubeSat{
+        CubeSat {
             id: sat_id,
-            mailBox: MailBox{ messages: vec![] }
+            mailBox: MailBox { messages: vec![] },
         }
     }
 

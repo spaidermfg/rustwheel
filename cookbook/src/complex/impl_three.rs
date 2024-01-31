@@ -11,13 +11,11 @@ pub fn impl_three() {
             panic!("An error has occurred!")
         }
     }
-
 }
 
 static mut ERROR: isize = 0;
 
 struct File;
-
 
 fn read(f: &File, save_to: &mut Vec<u8>) -> usize {
     if random() && random() && random() {
@@ -27,4 +25,3 @@ fn read(f: &File, save_to: &mut Vec<u8>) -> usize {
     }
     0
 }
-

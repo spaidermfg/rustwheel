@@ -27,10 +27,14 @@ pub fn param_cmd() {
 
 fn ansi() {
     // print color text
-    println!("This is {} in color, {} in color and {} in color",
-    Colour::Red.paint("red"), Colour::Blue.paint("blue"), Colour::Green.paint("green"));
+    println!(
+        "This is {} in color, {} in color and {} in color",
+        Colour::Red.paint("red"),
+        Colour::Blue.paint("blue"),
+        Colour::Green.paint("green")
+    );
 
     println!("This {} in color", Colour::Purple.bold().paint("bold"));
 
-    println!("This {} in style",Style::new().bold().paint("bold"))
+    println!("This {} in style", Style::new().bold().paint("bold"))
 }
