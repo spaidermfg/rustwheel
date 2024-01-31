@@ -4,6 +4,9 @@
 //! # 解决所有权的方法
 //! * 在不需要完整所有权的地方，使用引用
 //! * 减少生命周期长的值
+//! # 所有权移动的方法
+//! * 通过赋值
+//! * 通过函数传递
 #![allow(unused_variables)]
 
 pub fn life_time() {
@@ -13,11 +16,13 @@ pub fn life_time() {
     let sat_c = CubeSat::new(3);
 
     /// 当值还没有被借用时，重新绑定该值是合法的
+    // 检查卫星状态
     let sat_a = check_status(sat_a);
     let sat_b = check_status(sat_b);
     let sat_c = check_status(sat_c);
     println!("{:?} {:?} {:?}", sat_a, sat_b, sat_c);
 
+    //再次检查卫星状态
     let a_status = check_status(sat_a);
     let b_status = check_status(sat_b);
     let c_status = check_status(sat_c);
@@ -35,33 +40,12 @@ pub fn life_time() {
     println!("[recv]: {:?}", msg);
 }
 
-// 卫星
+// 人造卫星
 #[derive(Debug)]
 struct CubeSat {
     id: u64,
     mailBox: MailBox,
 }
-
-#[derive(Debug)]
-struct MailBox {
-    messages: Vec<Message>,
-}
-
-// 地面站
-struct GroundStation;
-
-impl GroundStation {
-    fn new() -> GroundStation {
-        GroundStation {}
-    }
-
-    // 发送消息
-    fn send(&self, to: &mut CubeSat, msg: Message) {
-        to.mailBox.messages.push(msg);
-    }
-}
-
-type Message = String;
 
 impl CubeSat {
     fn new(sat_id: u64) -> CubeSat {
@@ -77,12 +61,36 @@ impl CubeSat {
     }
 }
 
-// 状态消息
+// 地面站 用户和卫星的中介
+struct GroundStation;
+
+impl GroundStation {
+    fn new() -> GroundStation {
+        GroundStation {}
+    }
+
+    // 发送消息
+    fn send(&self, to: &mut CubeSat, msg: Message) {
+        to.mailBox.messages.push(msg);
+    }
+}
+
+// 邮箱
+#[derive(Debug)]
+struct MailBox {
+    messages: Vec<Message>,
+}
+
+// 消息，地面站发送，卫星接受
+type Message = String;
+
+// 卫星状态消息
 #[derive(Debug)]
 enum StatusMessage {
     Ok,
 }
 
+// 检查卫星状态
 fn check_status(sat_id: CubeSat) -> CubeSat {
     println!("{:?} {:?}", sat_id, StatusMessage::Ok);
     sat_id
