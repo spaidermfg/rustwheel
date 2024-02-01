@@ -1,6 +1,7 @@
 //! lifetime,ownership，borrow
 //! Rust中基本类型实现了Copy trait，所以可以被隐式借用
 //! 基本类型都具有复制语义，其他类型都具有移动语义
+//! 当值还没有被借用时，重新绑定该值是合法的
 //! # 解决所有权的方法
 //! * 在不需要完整所有权的地方，使用引用(&T, &mut T)
 //! * 减少生命周期长的值
@@ -15,7 +16,6 @@ pub fn life_time() {
     let sat_b = CubeSat::new(2);
     let sat_c = CubeSat::new(3);
 
-    /// 当值还没有被借用时，重新绑定该值是合法的
     // 检查卫星状态
     let sat_a = check_status(sat_a);
     let sat_b = check_status(sat_b);
@@ -36,7 +36,7 @@ pub fn life_time() {
     let sat_ids = fetch_sat_ids();
     for sat_id in sat_ids {
         let mut sat = base.connect(sat_id);
-        base.send(&mut mail, &mut sat, Message{to: sat_id, content: String::from(print!("Hello {}", sat_id))});
+        base.send(&mut mail, &mut sat, Message{to: sat_id, content: String::from("Hello cube")});
     }
 
     // 卫星接收信息
