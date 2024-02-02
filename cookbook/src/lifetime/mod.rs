@@ -13,8 +13,16 @@
 //! * Copy是隐式起作用的，当所有权移动时，就会被复制。速度快消耗小。
 //! * Clone是显式发生作用的，需要显式调用clone()方法。速度慢消耗大。
 //! * 实现Copy的前提是实现Clone
-//!
+//! # 包装器类型
+//! * std::rc::Rc
+//! * Rc<T> 表示一个类型为T的引用计数的值，提供T的共享式所有权，能够防止T从内存中被删除，直到所有的所有者被删除
+//! * Rc<T> 实现了Clone，clone计数器自增，Drop计数器自减
+//! * Rc<T> 不支持修改，是不可变的。
+//! * 若要修改，则需要再包装一层，Rc<RefCell<T>>
 #![allow(unused_variables)]
+
+
+use std::rc::Rc;
 
 pub fn life_time() {
     println!("{}", "---".repeat(12));
@@ -52,6 +60,10 @@ pub fn life_time() {
         let msg = sat.recv(&mut mail);
         println!("SAT: {:?} 的MESSAGE：{:?}", sat, msg)
     }
+
+    // 使用引用计数器包装类型
+    let ground = Rc::new(GroundStation {});
+    println!("{:?}", ground);
 }
 
 // 人造卫星
@@ -80,6 +92,7 @@ fn fetch_sat_ids() -> Vec<u64> {
 }
 
 // 地面站 用户和卫星的中介
+#[derive(Debug)]
 struct GroundStation;
 
 impl GroundStation {
