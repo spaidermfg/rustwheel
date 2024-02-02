@@ -19,9 +19,13 @@
 //! * Rc<T> 实现了Clone，clone计数器自增，Drop计数器自减
 //! * Rc<T> 不支持修改，是不可变的。
 //! * 若要修改，则需要再包装一层，Rc<RefCell<T>>
+//! * 使用引用计数器会降低运行时的性能
+//! * 可替代Clone，非线程安全的，线程安全需要使用Arc<T>来替代，Arc<RefCell<T>>
 #![allow(unused_variables)]
 
 
+use std::cell::RefCell;
+use std::default;
 use std::rc::Rc;
 
 pub fn life_time() {
@@ -62,8 +66,12 @@ pub fn life_time() {
     }
 
     // 使用引用计数器包装类型
-    let ground = Rc::new(GroundStation {});
+    let ground: Rc<RefCell<GroundStation>> = Rc::new(RefCell::new(GroundStation{radio_freq: 67.67}));
     println!("{:?}", ground);
+
+    let mut ref_ground = ground.borrow_mut();
+    ref_ground.radio_freq += 21.67;
+    println!("ground: {:?}, ref_ground: {:?}", ground, ref_ground);
 }
 
 // 人造卫星
@@ -93,11 +101,13 @@ fn fetch_sat_ids() -> Vec<u64> {
 
 // 地面站 用户和卫星的中介
 #[derive(Debug)]
-struct GroundStation;
+struct GroundStation {
+    radio_freq: f64
+}
 
 impl GroundStation {
     fn new() -> GroundStation {
-        GroundStation {}
+        GroundStation { radio_freq: 0.0 }
     }
 
     // 发送消息
