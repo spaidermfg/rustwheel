@@ -32,7 +32,7 @@ struct Person {
 
 impl Person {
     pub fn new(name: String, age: u32) -> Self {
-        Person {name, age}
+        Person { name, age }
     }
 }
 

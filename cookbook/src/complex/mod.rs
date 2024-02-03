@@ -1,8 +1,8 @@
 #![allow(unused_variables)]
 //! Simulating files one step at a time.
 
-use std::fmt::{Display, Formatter};
 use rand::prelude::*;
+use std::fmt::{Display, Formatter};
 
 mod impl_three;
 
@@ -21,11 +21,11 @@ pub fn complex_process() {
 }
 
 // 可变静态全局变量
-static mut ERROR: isize =  0;
+static mut ERROR: isize = 0;
 
 // 使用普通函数对API进行实验
 fn file_main() {
-    let vec_data = vec![114, 117,115,116,33];
+    let vec_data = vec![114, 117, 115, 116, 33];
     let mut f1 = File::new_with_data("hello.txt", &vec_data);
 
     let mut buffer: Vec<u8> = Vec::new();
@@ -52,7 +52,7 @@ struct File {
     state: FileState,
 }
 
-// 要为结构体实现trait，结构体中的字段也需要实现该trait
+// 要为结构体实现trait，结构体中的字段类型也需要实现该trait
 impl Display for File {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{} >>> ({})", self.name, self.state)
@@ -66,7 +66,7 @@ impl File {
     /// let f = File::new("example.txt");
     /// ```
     fn new(name: &str) -> File {
-        File{
+        File {
             name: String::from(name),
             data: Vec::new(),
             state: FileState::Closed,
@@ -90,7 +90,7 @@ impl File {
         let tmp_length = tmp.len();
 
         save_to.reserve(tmp_length);
-        save_to.append(&mut tmp);  // append会将other vec清空
+        save_to.append(&mut tmp); // append会将other vec清空
         Ok(tmp_length)
     }
 }
@@ -110,7 +110,7 @@ fn open(mut f: File) -> Result<File, String> {
 fn close(mut f: File) -> Result<File, String> {
     if one_in(10_000) {
         let err_msg = String::from("");
-        return Err(err_msg)
+        return Err(err_msg);
     }
     f.state = FileState::Closed;
     Ok(f)
@@ -149,15 +149,15 @@ fn one_in(denominator: u32) -> bool {
 enum Event {
     Update,
     Delete,
-    Unknown
+    Unknown,
 }
 
 type Message = String;
 
 fn parse_log(line: &str) -> (Event, Message) {
-    let parts: Vec<_> = line.splitn(2,' ').collect();
+    let parts: Vec<_> = line.splitn(2, ' ').collect();
     if parts.len() == 1 {
-       return (Event::Unknown,String::from(line));
+        return (Event::Unknown, String::from(line));
     }
 
     let event = parts[0];
@@ -166,7 +166,7 @@ fn parse_log(line: &str) -> (Event, Message) {
     match event {
         "UPDATE" | "update" => (Event::Update, rest),
         "DELETE" | "delete" => (Event::Delete, rest),
-        _  => (Event::Unknown, rest)
+        _ => (Event::Unknown, rest),
     }
 }
 
@@ -180,7 +180,7 @@ delete delete user where a = 4;";
     }
 }
 
-#[derive(Debug,PartialOrd, PartialEq)]
+#[derive(Debug, PartialOrd, PartialEq)]
 enum FileState {
     Open,
     Closed,
@@ -191,11 +191,10 @@ impl Display for FileState {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match *self {
             FileState::Open => write!(f, "OPEN"),
-            FileState::Closed => write!(f, "ClOSE")
+            FileState::Closed => write!(f, "ClOSE"),
         }
     }
 }
-
 
 /// trait 让编译器和开发者知道，有多个类型试图执行同一个任务
 /// trait关键字用于定义一个trait，impl关键字用来给一个具体的类型附加上某个trait
@@ -214,10 +213,8 @@ impl Play for Video {
 }
 
 fn play_video() {
-    let v = Video{};
-    let mut buffer = vec!();
+    let v = Video {};
+    let mut buffer = vec![];
     let result = v.begin(&mut buffer).unwrap();
     println!("{} bytes read from {:?}", result, v);
 }
-
-
