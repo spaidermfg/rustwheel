@@ -1,3 +1,5 @@
+use std::mem::transmute;
+
 ///! 基础数据类型
 ///! # 不同语法调用不同的trait
 ///! * {} -> std::fmt::Display;
@@ -62,5 +64,17 @@ fn bit() {
 
     print!("{} {} {}....", zero, one, two);
     println!("{} {} {}", sixtyfivethousand_533, sixtyfivethousand_534, sixtyfivethousand_535);
+
+    // 检验字节序
+    // 现大部分硬件都采用小端序的格式来存储整数
+    let big_endian: [u8; 4] = [0xAA, 0xBB, 0xCC, 0xDD];
+    let little_endiam: [u8; 4] = [0xDD, 0xCC, 0xBB, 0xAA];
+    let big: i32 = unsafe {
+        transmute(big_endian)
+    };
+    let little: i32 = unsafe {
+        transmute(little_endiam)
+    };
+    println!("{} vs {}", big, little)
 }
 
