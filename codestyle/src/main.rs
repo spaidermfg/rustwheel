@@ -1,5 +1,6 @@
 //! Rust代码风格
 //! 参考：https://chuxiuhong.com/chuxiuhong-rust-patterns-zh/intro.html
+
 fn main() {
     // 参数最好使用借用类型
     println!("Hello, world!");
@@ -15,6 +16,10 @@ fn main() {
 
     // 字符串拼接
     println!("{}",connect_string("world"));
+
+    // default属性
+    let def = MyConfiguration::default();
+    assert_eq!(false, def.check);
 }
 
 /// 1. 参数最好使用借用类型
@@ -45,4 +50,11 @@ fn connect_string(word: &str) -> String {
     a.push_str(word);
     a.push('!');
     a
+}
+
+/// default属性
+/// default不能接受参数，并且只能为一个类型实现一种Default方法
+#[derive(Default,Debug)]
+struct MyConfiguration {
+    check: bool
 }
